@@ -32,4 +32,24 @@
             <redirect></redirect>
         </navigation-case>
     </navigation-rule>
+    
+    <!-- navigation rule para uso do login customizado -->
+    <navigation-rule>
+        <display-name>pages/secure/secured.xhtml</display-name>
+        <from-view-id>/pages/secure/secured.xhtml</from-view-id>
+        <navigation-case>
+            <from-action>#{loginMgmtBean.logout}</from-action>
+            <from-outcome>loggedout</from-outcome>
+            <to-view-id>/pages/home/home.xhtml</to-view-id>
+        </navigation-case>
+    </navigation-rule>
+    <navigation-rule>
+        <display-name>pages/common/login.xhtml</display-name>
+        <from-view-id>/pages/common/login.xhtml</from-view-id>
+        <navigation-case>
+            <from-action>#{loginMgmtBean.login}</from-action>
+            <from-outcome>secured</from-outcome>
+            <to-view-id>/pages/secure/secured.xhtml</to-view-id>
+        </navigation-case>
+    </navigation-rule>
 </faces-config>

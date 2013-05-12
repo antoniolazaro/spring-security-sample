@@ -12,6 +12,9 @@ http://www.springframework.org/schema/security/spring-security-3.1.xsd">
 		<sec:intercept-url pattern="/pages/unsecure/**"
 			access="permitAll" />
 		<sec:intercept-url pattern="/**" access="permitAll" />
+		<!-- customizando pagina de login -->
+		<sec:form-login login-page="/pages/common/login.jsf"/>
+		
 	</sec:http>
 
 	<sec:authentication-manager alias="authenticationManager">
