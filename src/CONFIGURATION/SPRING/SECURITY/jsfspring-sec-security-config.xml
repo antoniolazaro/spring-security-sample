@@ -29,7 +29,10 @@ http://www.springframework.org/schema/security/spring-security-3.1.xsd">
 
 	<sec:authentication-manager alias="authenticationManager">
 		<sec:authentication-provider ref="rememberMeAuthenticationProvider" />
-		<sec:authentication-provider>
+		<sec:authentication-provider user-service-ref="customjdbcUserService" />
+		
+		<!-- Configuração com banco default do spring-security -->
+		<!--  sec:authentication-provider>
 			<sec:jdbc-user-service data-source-ref="dataSource"
 				id="userDetailsService"
 				users-by-username-query="
@@ -39,7 +42,8 @@ http://www.springframework.org/schema/security/spring-security-3.1.xsd">
 				authorities-by-username-query="
 		      select u.username, au.authority from users u, authorities au 
 		      where u.username = au.username and u.username = ?  " />
-		</sec:authentication-provider>
+		</sec:authentication-provider-->
+		
 		<!-- descomentar authentication-provider abaixo e comentar o acima, para 
 			uso sem conexão com banco de dados -->
 		<!-- sec:authentication-provider > <sec:user-service id="userDetailsService"> 

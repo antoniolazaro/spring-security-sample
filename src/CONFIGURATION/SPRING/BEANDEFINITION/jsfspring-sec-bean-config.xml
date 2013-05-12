@@ -18,7 +18,8 @@ http://www.springframework.org/schema/security/spring-security-3.1.xsd">
     <beans:bean id="rememberMeServices"
         class="org.springframework.security.web.authentication.rememberme.TokenBasedRememberMeServices">
         <beans:property name="key" value="jsfspring-sec" />
-        <beans:property  name="userDetailsService" ref="userDetailsService" />
+        <!-- beans:property  name="userDetailsService" ref="userDetailsService" /-->
+         <beans:property  name="userDetailsService" ref="customjdbcUserService" />
         <beans:property  name="alwaysRemember" value="true" />
         <beans:property  name="tokenValiditySeconds" value="30" />
     </beans:bean>
@@ -46,5 +47,20 @@ http://www.springframework.org/schema/security/spring-security-3.1.xsd">
 		<beans:property name="jndiName" value="java:comp/env/jdbc/ilaudosDB" />
 		<beans:property name="resourceRef" value="true" />
 	</beans:bean>
+	
+	<beans:bean id="customjdbcUserService" class="com.czina.example.jsfsecurity.dao.CustomJDBCDAOImpl">
+        <beans:property name="dataSource" ref="dataSource"/>
+        <beans:property name="enableAuthorities" value="true"/>
+        <beans:property name="usersByUsernameQuery">
+            <beans:value>select username,password, enabled 
+		      from users where username= ? and enabled = '1'</beans:value>
+        </beans:property>
+        <beans:property name="authoritiesByUsernameQuery">
+            <beans:value>
+                 select u.username, au.authority from users u, authorities au 
+		      where u.username = au.username and u.username = ? 
+            </beans:value>
+        </beans:property>
+   </beans:bean>
     
 </beans:beans>
