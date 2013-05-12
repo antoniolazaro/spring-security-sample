@@ -7,6 +7,10 @@ http://www.springframework.org/schema/security
 http://www.springframework.org/schema/security/spring-security-3.1.xsd">
 
 	<sec:http auto-config="true" use-expressions="true">
+	
+		<!-- libera acesso aos recursos do primefaces/jsf -->
+		<sec:intercept-url pattern="/javax.faces.resource/**" access="permitAll"/>
+	
 		<sec:intercept-url pattern="/pages/secure/**"
 			access="hasRole('ROLE_USER')" />
 		<sec:intercept-url pattern="/pages/unsecure/**"
