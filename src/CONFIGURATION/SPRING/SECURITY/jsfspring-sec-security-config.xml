@@ -15,6 +15,12 @@ http://www.springframework.org/schema/security/spring-security-3.1.xsd">
 		<!-- customizando pagina de login -->
 		<sec:form-login login-page="/pages/common/login.jsf"/>
 		
+		<!-- Implementando logout feature -->
+		<sec:logout
+            invalidate-session="true"
+            delete-cookies="true"
+            logout-success-url="/"></sec:logout>
+		
 	</sec:http>
 
 	<sec:authentication-manager alias="authenticationManager">

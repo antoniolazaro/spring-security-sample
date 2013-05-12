@@ -7,6 +7,10 @@
 <h:head>
 </h:head>
 <h:body>
-    <h:outputLabel value="I am secured, if you are seeing me it means you have logged in correctly, great!"></h:outputLabel>  
+    <h:form>
+        <h:outputLabel value="I am secured, if you are seeing me it means you have logged in correctly, great!"></h:outputLabel>
+        <h:commandLink id="logout" action="#{loginMgmtBean.logout}" value="Logout"></h:commandLink>
+        <h:messages></h:messages>
+    </h:form>  
 </h:body>
 </html>

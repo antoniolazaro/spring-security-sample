@@ -53,6 +53,11 @@ public class LoginBean {
     public String cancel() {
         return null;
     }
+    
+    public String logout(){
+        SecurityContextHolder.clearContext();
+        return "loggedout";
+    }
  
     public AuthenticationManager getAuthenticationManager() {
         return authenticationManager;
