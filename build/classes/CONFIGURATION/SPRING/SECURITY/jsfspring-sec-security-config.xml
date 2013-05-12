@@ -7,32 +7,43 @@ http://www.springframework.org/schema/security
 http://www.springframework.org/schema/security/spring-security-3.1.xsd">
 
 	<sec:http auto-config="true" use-expressions="true">
-	
+
 		<!-- libera acesso aos recursos do primefaces/jsf -->
-		<sec:intercept-url pattern="/javax.faces.resource/**" access="permitAll"/>
-	
+		<sec:intercept-url pattern="/javax.faces.resource/**"
+			access="permitAll" />
+
 		<sec:intercept-url pattern="/pages/secure/**"
 			access="hasRole('ROLE_USER')" />
 		<sec:intercept-url pattern="/pages/unsecure/**"
 			access="permitAll" />
 		<sec:intercept-url pattern="/**" access="permitAll" />
 		<!-- customizando pagina de login -->
-		<sec:form-login login-page="/pages/common/login.jsf"/>
-		
+		<sec:form-login login-page="/pages/common/login.jsf" />
+
 		<!-- Implementando logout feature -->
-		<sec:logout
-            invalidate-session="true"
-            delete-cookies="JSESSIONID,SPRING_SECURITY_REMEMBER_ME_COOKIE"
-            logout-success-url="/"></sec:logout>
-		
+		<sec:logout invalidate-session="true"
+			delete-cookies="JSESSIONID,SPRING_SECURITY_REMEMBER_ME_COOKIE"
+			logout-success-url="/"></sec:logout>
+
 	</sec:http>
 
 	<sec:authentication-manager alias="authenticationManager">
-		 <sec:authentication-provider ref="rememberMeAuthenticationProvider"></sec:authentication-provider>
-        <sec:authentication-provider >
-            <sec:user-service id="userDetailsService">
-                <sec:user authorities="ROLE_USER" name="admin" password="admin" />
-            </sec:user-service>
-        </sec:authentication-provider>
+		<sec:authentication-provider ref="rememberMeAuthenticationProvider" />
+		<sec:authentication-provider>
+			<sec:jdbc-user-service data-source-ref="dataSource"
+				id="userDetailsService"
+				users-by-username-query="
+		      select username,password, enabled 
+		      from users where username=? and enabled = '1'"
+
+				authorities-by-username-query="
+		      select u.username, au.authority from users u, authorities au 
+		      where u.username = au.username and u.username = ?  " />
+		</sec:authentication-provider>
+		<!-- descomentar authentication-provider abaixo e comentar o acima, para 
+			uso sem conexão com banco de dados -->
+		<!-- sec:authentication-provider > <sec:user-service id="userDetailsService"> 
+			<sec:user authorities="ROLE_USER" name="admin" password="admin" /> </sec:user-service> 
+			</sec:authentication-provider -->
 	</sec:authentication-manager>
 </beans:beans>

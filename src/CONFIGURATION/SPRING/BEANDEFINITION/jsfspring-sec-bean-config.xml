@@ -34,4 +34,17 @@ http://www.springframework.org/schema/security/spring-security-3.1.xsd">
         <beans:property name="authenticationManager" ref="authenticationManager" />
     </beans:bean>
     
+    <!-- configuração datasource exemplo abaixo para quem não tem uma base configurada. Necessário criar o banco -->
+     <!--beans:bean id="dataSource"
+        class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+        <beans:property name="driverClassName" value="com.mysql.jdbc.Driver" />
+        <beans:property name="url" value="jdbc:mysql://localhost:3306/jsf_spring_sec_default" />
+        <beans:property name="username" value="root" />
+        <beans:property name="password" value="root" />
+   </beans:bean-->
+    <beans:bean id="dataSource" class="org.springframework.jndi.JndiObjectFactoryBean">
+		<beans:property name="jndiName" value="java:comp/env/jdbc/ilaudosDB" />
+		<beans:property name="resourceRef" value="true" />
+	</beans:bean>
+    
 </beans:beans>
