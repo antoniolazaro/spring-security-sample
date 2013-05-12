@@ -12,6 +12,26 @@ http://www.springframework.org/schema/security/spring-security-3.1.xsd">
 	
 	 <beans:bean id="loginBean" name="loginBean" class="com.czina.example.jsfsecurity.controller.LoginBean" scope="prototype">
         <beans:property name="authenticationManager" ref="authenticationManager"></beans:property>
+        <beans:property name="rememberMeServices" ref="rememberMeServices"></beans:property>
+    </beans:bean>
+    
+    <beans:bean id="rememberMeServices"
+        class="org.springframework.security.web.authentication.rememberme.TokenBasedRememberMeServices">
+        <beans:property name="key" value="jsfspring-sec" />
+        <beans:property  name="userDetailsService" ref="userDetailsService" />
+        <beans:property  name="alwaysRemember" value="true" />
+        <beans:property  name="tokenValiditySeconds" value="30" />
+    </beans:bean>
+ 
+    <beans:bean id="rememberMeAuthenticationProvider"
+        class="org.springframework.security.authentication.RememberMeAuthenticationProvider">
+        <beans:property name="key" value="jsfspring-sec"/>
+    </beans:bean>
+ 
+    <beans:bean id="rememberMeFilter"
+        class="org.springframework.security.web.authentication.rememberme.RememberMeAuthenticationFilter">
+        <beans:property name="rememberMeServices" ref="rememberMeServices"/>
+        <beans:property name="authenticationManager" ref="authenticationManager" />
     </beans:bean>
     
 </beans:beans>

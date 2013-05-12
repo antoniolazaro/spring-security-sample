@@ -9,17 +9,19 @@
 <h:body>
     <div align="right" style="">
         <h:form  id="loginFormId" prependId="false">
-        		<h:message />
                 <div id="loginFieldsPnlId">
                     <div id="loginFieldUsrContId">
-                        <h:outputText id="outTxtUserNameId" value="Usuário" name="outTxtUserNameNm"></h:outputText>
+                        <h:outputText id="outTxtUserNameId" value="Username:" name="outTxtUserNameNm"></h:outputText>
                         <h:inputText id="userName" required="true" value="#{loginMgmtBean.userName}" requiredMessage="Please enter username"></h:inputText>
                         <h:outputLabel id="outLblUserNameId" for="userName" name="outLblUserNameNm"></h:outputLabel>
                     </div>
                     <div id="loginFieldPassContId">
-                        <h:outputText id="outTxtPasswordId" value="Senha" name="outTxtPasswordNm"></h:outputText>
-                        <h:inputSecret id="password"  required="true" value="#{loginMgmtBean.password}" requiredMessage="Please enter password" name="inTxtPasswordNm"></h:inputSecret>
+                        <h:outputText id="outTxtPasswordId" value="Password:" name="outTxtPasswordNm"></h:outputText>
+                        <h:inputSecret id="password"  required="true" value="#{loginMgmtBean.password}" requiredMessage="Please enter password"></h:inputSecret>
                         <h:outputLabel id="outLblPasswordId" for="password" name="outLblPasswordNm"></h:outputLabel>
+                    </div>
+                    <div id="loginFieldPassContId">
+                        <h:selectBooleanCheckbox id="rememberMe" value="#{loginMgmtBean.rememberMe}" label="Remember Me">Remember Me</h:selectBooleanCheckbox>
                     </div>
                 </div>
                 <div id="loginBtnPanelId">
