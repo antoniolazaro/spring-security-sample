@@ -1,0 +1,44 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+	<h:outputStylesheet library="css" name="core.css" />
+</h:head>
+
+<h:body>
+	<h:form id="form1">
+		<p:messages id="messages" showDetail="false" autoUpdate="true"
+			closable="false" />
+	</h:form>
+	<h:form id="loginForm" prependId="false">
+		<div class="centeredBox">
+
+			<p:panelGrid columns="2">
+				<h:outputLabel for="j_username" value="Username:" />
+				<p:inputText id="j_username" required="true"
+					value="#{loginBean.username}">
+				</p:inputText>
+
+				<h:outputLabel for="j_password" value="Password:" />
+				<p:password id="j_password" required="true"
+					value="#{loginBean.password}">
+				</p:password>
+
+				<h:outputText for="_spring_security_remember_me" value="Remember me" />
+				<p:selectBooleanCheckbox id="_spring_security_remember_me"
+					value="#{loginBean.rememberMe}" />
+
+				<f:facet name="footer">
+					<p:commandButton type="submit" id="login" ajax="false"
+						actionListener="#{loginBean.doLogin}" value="Login" />
+				</f:facet>
+			</p:panelGrid>
+		</div>
+	</h:form>
+</h:body>
+</html>

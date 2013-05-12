@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pageflow:Pageflow xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:pageflow="http://www.sybase.com/suade/pageflow" id="pf13508440139010" configfile="/spring-security-sample-mine/WebContent/WEB-INF/faces-config.xml">
+  <nodes xsi:type="pageflow:PFPage" name="home.xhtml" id="pf136837834813217" referenceLink="//@navigationRule.1/@fromViewId|" outlinks="pf136837834813218 pf136837888418720" path="/pages/home/home.xhtml"/>
+  <nodes xsi:type="pageflow:PFPage" name="pages/secure/secured.xhtml" id="pf136837834813219" referenceLink="//@navigationRule.0/@navigationCase.0/@toViewId|" inlinks="pf136837834813218" path="/pages/secure/secured.xhtml"/>
+  <nodes xsi:type="pageflow:PFPage" name="pages/unsecure/unsecured.xhtml" id="pf136837888418721" referenceLink="//@navigationRule.1/@navigationCase.0/@toViewId|" inlinks="pf136837888418720" path="/pages/unsecure/unsecured.xhtml"/>
+  <links id="pf136837834813218" target="pf136837834813219" source="pf136837834813217" outcome="Secured" redirect="true" fromaction="#{navigator.navigateTo}"/>
+  <links id="pf136837888418720" target="pf136837888418721" source="pf136837834813217" outcome="UnSecured" redirect="true" fromaction="#{navigator.navigateTo}"/>
+</pageflow:Pageflow>

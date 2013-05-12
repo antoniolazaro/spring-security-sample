@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans:beans xmlns:sec="http://www.springframework.org/schema/security"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:beans="http://www.springframework.org/schema/beans"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
+http://www.springframework.org/schema/security
+http://www.springframework.org/schema/security/spring-security-3.1.xsd">
+
+	<sec:http auto-config="true" use-expressions="true">
+		<sec:intercept-url pattern="/pages/secure/**"
+			access="hasRole('ROLE_USER')" />
+		<sec:intercept-url pattern="/pages/unsecure/**"
+			access="permitAll" />
+		<sec:intercept-url pattern="/**" access="permitAll" />
+	</sec:http>
+
+	<sec:authentication-manager alias="authenticationManager">
+		<sec:authentication-provider>
+			<sec:user-service>
+				<sec:user authorities="ROLE_USER" name="admin" password="admin" />
+			</sec:user-service>
+		</sec:authentication-provider>
+	</sec:authentication-manager>
+</beans:beans>
