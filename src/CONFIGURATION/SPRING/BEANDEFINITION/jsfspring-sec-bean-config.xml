@@ -9,58 +9,90 @@ http://www.springframework.org/schema/security/spring-security-3.1.xsd">
 	<beans:bean id="navigator" name="navigator"
 		class="com.czina.example.jsfsecurity.controller.Navigator" scope="session">
 	</beans:bean>
-	
-	 <beans:bean id="loginBean" name="loginBean" class="com.czina.example.jsfsecurity.controller.LoginBean" scope="prototype">
-        <beans:property name="authenticationManager" ref="authenticationManager"></beans:property>
-        <beans:property name="rememberMeServices" ref="rememberMeServices"></beans:property>
-    </beans:bean>
-    
-    <beans:bean id="rememberMeServices"
-        class="org.springframework.security.web.authentication.rememberme.TokenBasedRememberMeServices">
-        <beans:property name="key" value="jsfspring-sec" />
-        <!-- beans:property  name="userDetailsService" ref="userDetailsService" /-->
-         <beans:property  name="userDetailsService" ref="customjdbcUserService" />
-        <beans:property  name="alwaysRemember" value="true" />
-        <beans:property  name="tokenValiditySeconds" value="30" />
-    </beans:bean>
- 
-    <beans:bean id="rememberMeAuthenticationProvider"
-        class="org.springframework.security.authentication.RememberMeAuthenticationProvider">
-        <beans:property name="key" value="jsfspring-sec"/>
-    </beans:bean>
- 
-    <beans:bean id="rememberMeFilter"
-        class="org.springframework.security.web.authentication.rememberme.RememberMeAuthenticationFilter">
-        <beans:property name="rememberMeServices" ref="rememberMeServices"/>
-        <beans:property name="authenticationManager" ref="authenticationManager" />
-    </beans:bean>
-    
-    <!-- configuração datasource exemplo abaixo para quem não tem uma base configurada. Necessário criar o banco -->
-     <!--beans:bean id="dataSource"
-        class="org.springframework.jdbc.datasource.DriverManagerDataSource">
-        <beans:property name="driverClassName" value="com.mysql.jdbc.Driver" />
-        <beans:property name="url" value="jdbc:mysql://localhost:3306/jsf_spring_sec_default" />
-        <beans:property name="username" value="root" />
-        <beans:property name="password" value="root" />
-   </beans:bean-->
-    <beans:bean id="dataSource" class="org.springframework.jndi.JndiObjectFactoryBean">
+
+	<beans:bean id="loginBean" name="loginBean"
+		class="com.czina.example.jsfsecurity.controller.LoginBean" scope="prototype">
+		<beans:property name="authenticationManager" ref="authenticationManager"></beans:property>
+		<beans:property name="rememberMeServices" ref="rememberMeServices"></beans:property>
+		<beans:property name="userDetailsService" ref="customjdbcUserService"></beans:property>
+	</beans:bean>
+
+	<beans:bean id="rememberMeServices"
+		class="org.springframework.security.web.authentication.rememberme.TokenBasedRememberMeServices">
+		<beans:property name="key" value="jsfspring-sec" />
+		<!-- beans:property name="userDetailsService" ref="userDetailsService" 
+			/ -->
+		<beans:property name="userDetailsService" ref="customjdbcUserService" />
+		<beans:property name="alwaysRemember" value="true" />
+		<beans:property name="tokenValiditySeconds" value="30" />
+	</beans:bean>
+
+	<beans:bean id="rememberMeAuthenticationProvider"
+		class="org.springframework.security.authentication.RememberMeAuthenticationProvider">
+		<beans:property name="key" value="jsfspring-sec" />
+	</beans:bean>
+
+	<beans:bean id="rememberMeFilter"
+		class="org.springframework.security.web.authentication.rememberme.RememberMeAuthenticationFilter">
+		<beans:property name="rememberMeServices" ref="rememberMeServices" />
+		<beans:property name="authenticationManager" ref="authenticationManager" />
+	</beans:bean>
+
+	<!-- configuração datasource exemplo abaixo para quem não tem uma base configurada. 
+		Necessário criar o banco -->
+	<!--beans:bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource"> 
+		<beans:property name="driverClassName" value="com.mysql.jdbc.Driver" /> <beans:property 
+		name="url" value="jdbc:mysql://localhost:3306/jsf_spring_sec_default" /> 
+		<beans:property name="username" value="root" /> <beans:property name="password" 
+		value="root" /> </beans:bean -->
+	<beans:bean id="dataSource"
+		class="org.springframework.jndi.JndiObjectFactoryBean">
 		<beans:property name="jndiName" value="java:comp/env/jdbc/ilaudosDB" />
 		<beans:property name="resourceRef" value="true" />
 	</beans:bean>
-	
-	<beans:bean id="customjdbcUserService" class="com.czina.example.jsfsecurity.dao.CustomJDBCDAOImpl">
-        <beans:property name="dataSource" ref="dataSource"/>
-        <beans:property name="enableAuthorities" value="true"/>
-        <beans:property name="usersByUsernameQuery">
-            <beans:value>select username,password, enabled 
-		      from users where username= ? and enabled = '1'</beans:value>
-        </beans:property>
-        <beans:property name="authoritiesByUsernameQuery">
-            <beans:value>
-                 select u.username, au.authority from users u, authorities au 
-		      where u.username = au.username and u.username = ? 
-            </beans:value>
-        </beans:property>
-   </beans:bean>
-    
+
+	<beans:bean id="customjdbcUserService"
+		class="com.czina.example.jsfsecurity.dao.CustomJDBCDAOImpl">
+		<beans:property name="dataSource" ref="dataSource" />
+		<beans:property name="enableAuthorities" value="true" />
+		<beans:property name="usersByUsernameQuery">
+			<beans:value>select username,password, enabled
+				from users where username= ? and enabled = '1'
+			</beans:value>
+		</beans:property>
+		<beans:property name="authoritiesByUsernameQuery">
+			<beans:value>
+				select u.username, au.authority from users u, authorities au
+				where u.username = au.username and u.username = ?
+			</beans:value>
+		</beans:property>
+	</beans:bean>
+
+	<!--beans:bean
+		class="org.springframework.security.authentication.encoding.Md5PasswordEncoder"
+		id="passwordEncoder" />
+
+	<beans:bean
+		class="org.springframework.security.authentication.dao.ReflectionSaltSource"
+		id="saltSource">
+		<beans:property name="userPropertyToUse" value="username" />
+	</beans:bean>
+
+	< beans:bean id="databasePasswordEncrypter"
+		class="com.czina.example.jsfsecurity.dao.DBPasswordEncrypterBean"
+		init-method="encryptDBPassword" depends-on="dataSource">
+		<beans:property name="passwordEncoder" ref="passwordEncoder"></beans:property>
+		<beans:property name="dataSource" ref="dataSource"></beans:property>
+		<beans:property name="userDetailsService" ref="customjdbcUserService"></beans:property>
+		<beans:property name="saltSource" ref="saltSource"></beans:property>
+		<beans:property name="selectQuery">
+			<beans:value>SELECT username, password, ENCRYPTED FROM users WHERE
+				(ENCRYPTED='NO' || ENCRYPTED IS NULL)</beans:value>
+		</beans:property>
+		<beans:property name="updateQuery">
+			<beans:value>UPDATE users SET password = ?, ENCRYPTED='YES' WHERE
+				username = ? </beans:value>
+		</beans:property>
+	</beans:bean-->
+
 </beans:beans>

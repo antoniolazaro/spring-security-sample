@@ -1,4 +1,9 @@
-﻿/* Banco de dados usado postgres SQL */
+﻿drop table users;
+drop table authorities;
+drop table group_authorities;
+drop table group_members;
+
+/* Banco de dados usado postgres SQL */
 CREATE  TABLE IF NOT EXISTS users (
   username VARCHAR(50) NOT NULL ,
   password VARCHAR(50) NOT NULL ,
@@ -50,3 +55,5 @@ INSERT INTO authorities VALUES ('admin','ROLE_USER'),('guest','ROLE_USER'),('adm
 
 select * from user;
 commit;
+
+select * from authorities;
