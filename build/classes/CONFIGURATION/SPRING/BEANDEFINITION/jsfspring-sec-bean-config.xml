@@ -68,9 +68,8 @@ http://www.springframework.org/schema/security/spring-security-3.1.xsd">
 		</beans:property>
 	</beans:bean>
 
-	<!--beans:bean
-		class="org.springframework.security.authentication.encoding.Md5PasswordEncoder"
-		id="passwordEncoder" />
+	<beans:bean
+		class="org.springframework.security.crypto.password.StandardPasswordEncoder" id="passwordEncoder" />
 
 	<beans:bean
 		class="org.springframework.security.authentication.dao.ReflectionSaltSource"
@@ -78,13 +77,12 @@ http://www.springframework.org/schema/security/spring-security-3.1.xsd">
 		<beans:property name="userPropertyToUse" value="username" />
 	</beans:bean>
 
-	< beans:bean id="databasePasswordEncrypter"
+	<beans:bean id="databasePasswordEncrypter"
 		class="com.czina.example.jsfsecurity.dao.DBPasswordEncrypterBean"
 		init-method="encryptDBPassword" depends-on="dataSource">
 		<beans:property name="passwordEncoder" ref="passwordEncoder"></beans:property>
 		<beans:property name="dataSource" ref="dataSource"></beans:property>
 		<beans:property name="userDetailsService" ref="customjdbcUserService"></beans:property>
-		<beans:property name="saltSource" ref="saltSource"></beans:property>
 		<beans:property name="selectQuery">
 			<beans:value>SELECT username, password, ENCRYPTED FROM users WHERE
 				(ENCRYPTED='NO' || ENCRYPTED IS NULL)</beans:value>
@@ -93,6 +91,6 @@ http://www.springframework.org/schema/security/spring-security-3.1.xsd">
 			<beans:value>UPDATE users SET password = ?, ENCRYPTED='YES' WHERE
 				username = ? </beans:value>
 		</beans:property>
-	</beans:bean-->
+	</beans:bean>
 
 </beans:beans>

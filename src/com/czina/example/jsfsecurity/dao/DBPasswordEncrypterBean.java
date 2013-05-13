@@ -1,17 +1,13 @@
 package com.czina.example.jsfsecurity.dao;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.core.RowCallbackHandler;
 import org.springframework.jdbc.core.support.JdbcDaoSupport;
-import org.springframework.security.authentication.dao.SaltSource;
-import org.springframework.security.authentication.encoding.PasswordEncoder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 /**
  * The Class DBPasswordEncrypterBean.
@@ -30,27 +26,28 @@ public class DBPasswordEncrypterBean extends JdbcDaoSupport{
     
     /** The user details service. */
     private UserDetailsService userDetailsService = null;
-
-	/** The salt source. */
-    private SaltSource saltSource = null;
  
     /**
      * Encrypt db password.
      */
-    public void encryptDBPassword() throws Exception{
+    public void encryptDBPassword(){
         getJdbcTemplate().query(getSelectQuery(), new RowCallbackHandler() {
             @Override
             public void processRow(ResultSet rs) throws SQLException {
+            	try{
                 final String username = rs.getString("username");
                 System.out.println("username -> "+username);
                 UserDetails user = userDetailsService.loadUserByUsername(username);
                 System.out.println("user -> "+user);
                 String password = rs.getString("password");
                 System.out.println("vai encriptar -> "+password);
-                final String encryptedPassword = passwordEncoder.encodePassword(password, saltSource.getSalt(user));
+                final String encryptedPassword = passwordEncoder.encode(password);
 
                 System.out.println("encriptou -> "+passwordEncoder);
                 getJdbcTemplate().update(getUpdateQuery(),encryptedPassword,username);
+                }catch(SQLException ex){
+                	ex.printStackTrace();
+                }
             }
         });
     }
@@ -118,13 +115,5 @@ public class DBPasswordEncrypterBean extends JdbcDaoSupport{
 
 	public void setUserDetailsService(UserDetailsService userDetailsService) {
 		this.userDetailsService = userDetailsService;
-	}
-
-	public SaltSource getSaltSource() {
-		return saltSource;
-	}
-
-	public void setSaltSource(SaltSource saltSource) {
-		this.saltSource = saltSource;
 	}
 }
