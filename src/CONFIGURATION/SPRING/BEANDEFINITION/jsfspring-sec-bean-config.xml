@@ -42,9 +42,9 @@ http://www.springframework.org/schema/security/spring-security-3.1.xsd">
 		Necessário criar o banco -->
 	<!--beans:bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource"> 
 		<beans:property name="driverClassName" value="com.mysql.jdbc.Driver" /> <beans:property 
-		name="url" value="jdbc:mysql://localhost:3306/jsf_spring_sec_default" /> 
-		<beans:property name="username" value="root" /> <beans:property name="password" 
-		value="root" /> </beans:bean -->
+		name="url" value="jdbc:mysql://localhost:3306/sec_default" /> <beans:property 
+		name="username" value="root" /> <beans:property name="password" value="root" 
+		/> </beans:bean -->
 	<beans:bean id="dataSource"
 		class="org.springframework.jndi.JndiObjectFactoryBean">
 		<beans:property name="jndiName" value="java:comp/env/jdbc/ilaudosDB" />
@@ -54,22 +54,43 @@ http://www.springframework.org/schema/security/spring-security-3.1.xsd">
 	<beans:bean id="customjdbcUserService"
 		class="com.czina.example.jsfsecurity.dao.CustomJDBCDAOImpl">
 		<beans:property name="dataSource" ref="dataSource" />
-		<beans:property name="enableAuthorities" value="true" />
+		<beans:property name="enableAuthorities" value="false" />
+		<beans:property name="enableGroups" value="true"></beans:property>
 		<beans:property name="usersByUsernameQuery">
-			<beans:value>select username,password, enabled
-				from users where username= ? and enabled = '1'
+			<beans:value>SELECT SEC_USERS_USERNAME, SEC_USERS_PASSWORD,
+				SEC_USERS_ENABLED FROM SEC_USERS WHERE SEC_USERS_USERNAME = ?
 			</beans:value>
 		</beans:property>
 		<beans:property name="authoritiesByUsernameQuery">
 			<beans:value>
-				select u.username, au.authority from users u, authorities au
-				where u.username = au.username and u.username = ?
+				SELECT SEC_ROLES_USERNAME,SEC_ROLES_ROLE_NAME from SEC_ROLES where
+				SEC_ROLES_USERNAME = ?
+			</beans:value>
+		</beans:property>
+		<beans:property name="groupAuthoritiesByUsernameQuery">
+			<beans:value>
+				SELECT
+				GROUPDTLS.SEC_GROUPS_GROUP_ID,
+				GROUPDTLS.SEC_GROUPS_GROUP_NAME,
+				GROUPPERMISSION.SEC_GROUP_AUTHORITIES_AUTHORITY
+				FROM
+				SEC_GROUPS GROUPDTLS,
+				SEC_GROUP_AUTHORITIES GROUPPERMISSION,
+				SEC_GROUP_MEMBERS GROUPMEMBERS,
+				SEC_USERS USERS
+				WHERE
+				USERS.SEC_USERS_USERNAME = ? AND
+				GROUPMEMBERS.SEC_GROUP_MEMBERS_USER_ID = USERS.PK_SEC_USERS AND
+				GROUPMEMBERS.SEC_GROUP_MEMBERS_GROUP_ID = GROUPDTLS.SEC_GROUPS_GROUP_ID AND
+				GROUPPERMISSION.SEC_GROUP_AUTHORITIES_GROUP_ID =
+				GROUPDTLS.SEC_GROUPS_GROUP_ID
 			</beans:value>
 		</beans:property>
 	</beans:bean>
 
 	<beans:bean
-		class="org.springframework.security.crypto.password.StandardPasswordEncoder" id="passwordEncoder" />
+		class="org.springframework.security.crypto.password.StandardPasswordEncoder"
+		id="passwordEncoder" />
 
 	<beans:bean
 		class="org.springframework.security.authentication.dao.ReflectionSaltSource"
@@ -77,20 +98,18 @@ http://www.springframework.org/schema/security/spring-security-3.1.xsd">
 		<beans:property name="userPropertyToUse" value="username" />
 	</beans:bean>
 
-	<beans:bean id="databasePasswordEncrypter"
-		class="com.czina.example.jsfsecurity.dao.DBPasswordEncrypterBean"
-		init-method="encryptDBPassword" depends-on="dataSource">
-		<beans:property name="passwordEncoder" ref="passwordEncoder"></beans:property>
-		<beans:property name="dataSource" ref="dataSource"></beans:property>
-		<beans:property name="userDetailsService" ref="customjdbcUserService"></beans:property>
-		<beans:property name="selectQuery">
-			<beans:value>SELECT username, password, ENCRYPTED FROM users WHERE
-				(ENCRYPTED='NO' || ENCRYPTED IS NULL)</beans:value>
-		</beans:property>
-		<beans:property name="updateQuery">
-			<beans:value>UPDATE users SET password = ?, ENCRYPTED='YES' WHERE
-				username = ? </beans:value>
-		</beans:property>
+	<!-- beans:bean id="databasePasswordEncrypter" class="com.czina.example.jsfsecurity.dao.DBPasswordEncrypterBean" 
+		init-method="encryptDBPassword" depends-on="dataSource"> <beans:property 
+		name="passwordEncoder" ref="passwordEncoder"></beans:property> <beans:property 
+		name="dataSource" ref="dataSource"></beans:property> <beans:property name="userDetailsService" 
+		ref="customjdbcUserService"></beans:property> <beans:property name="selectQuery"> 
+		<beans:value>SELECT username, password, ENCRYPTED FROM users WHERE (ENCRYPTED='NO' 
+		|| ENCRYPTED IS NULL)</beans:value> </beans:property> <beans:property name="updateQuery"> 
+		<beans:value>UPDATE users SET password = ?, ENCRYPTED='YES' WHERE username 
+		= ? </beans:value> </beans:property> </beans:bean -->
+
+	<beans:bean id="accessDeniedHandler" class="com.czina.example.jsfsecurity.AccessDeniedHandlerImpl">
+		<beans:property name="accessDeniedUrl" value="/pages/403.jsp" />
 	</beans:bean>
 
 </beans:beans>

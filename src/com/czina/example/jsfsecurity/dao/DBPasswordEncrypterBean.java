@@ -5,7 +5,6 @@ import java.sql.SQLException;
 
 import org.springframework.jdbc.core.RowCallbackHandler;
 import org.springframework.jdbc.core.support.JdbcDaoSupport;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
@@ -36,14 +35,7 @@ public class DBPasswordEncrypterBean extends JdbcDaoSupport{
             public void processRow(ResultSet rs) throws SQLException {
             	try{
                 final String username = rs.getString("username");
-                System.out.println("username -> "+username);
-                UserDetails user = userDetailsService.loadUserByUsername(username);
-                System.out.println("user -> "+user);
-                String password = rs.getString("password");
-                System.out.println("vai encriptar -> "+password);
-                final String encryptedPassword = passwordEncoder.encode(password);
-
-                System.out.println("encriptou -> "+passwordEncoder);
+                final String encryptedPassword = passwordEncoder.encode("password");
                 getJdbcTemplate().update(getUpdateQuery(),encryptedPassword,username);
                 }catch(SQLException ex){
                 	ex.printStackTrace();

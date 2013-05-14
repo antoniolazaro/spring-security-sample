@@ -12,8 +12,7 @@ http://www.springframework.org/schema/security/spring-security-3.1.xsd">
 		<sec:intercept-url pattern="/javax.faces.resource/**"
 			access="permitAll" />
 
-		<sec:intercept-url pattern="/pages/secure/**"
-			access="hasRole('ROLE_USER')" />
+		<sec:intercept-url pattern="/pages/secure/**" access="hasRole('ROLE_USER')" />
 		<sec:intercept-url pattern="/pages/unsecure/**"
 			access="permitAll" />
 		<sec:intercept-url pattern="/**" access="permitAll" />
@@ -24,13 +23,16 @@ http://www.springframework.org/schema/security/spring-security-3.1.xsd">
 		<sec:logout invalidate-session="true"
 			delete-cookies="JSESSIONID,SPRING_SECURITY_REMEMBER_ME_COOKIE"
 			logout-success-url="/"></sec:logout>
+			
+		<sec:access-denied-handler ref="accessDeniedHandler"/>
+		<!-- sec:access-denied-handler error-page="/pages/403.jsp"/-->
 
 	</sec:http>
 
 	<sec:authentication-manager alias="authenticationManager">
 		<sec:authentication-provider ref="rememberMeAuthenticationProvider" />
 		<sec:authentication-provider user-service-ref="customjdbcUserService">
-			<sec:password-encoder hash="sha" ref="passwordEncoder"/>
+			<!-- sec:password-encoder hash="sha" ref="passwordEncoder"/-->
 		</sec:authentication-provider>
 		
 		<!-- Configuração com banco default do spring-security -->

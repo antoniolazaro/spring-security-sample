@@ -50,6 +50,7 @@
             <from-action>#{loginMgmtBean.login}</from-action>
             <from-outcome>secured</from-outcome>
             <to-view-id>/pages/secure/secured.xhtml</to-view-id>
+            <redirect></redirect>
         </navigation-case>
     </navigation-rule>
 </faces-config>

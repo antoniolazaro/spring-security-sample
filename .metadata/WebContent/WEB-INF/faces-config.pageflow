@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <pageflow:Pageflow xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:pageflow="http://www.sybase.com/suade/pageflow" id="pf13508440139010" configfile="/spring-security-sample-mine/WebContent/WEB-INF/faces-config.xml">
   <nodes xsi:type="pageflow:PFPage" name="home.xhtml" id="pf136837834813217" referenceLink="//@navigationRule.2/@navigationCase.0/@toViewId|" outlinks="pf136837834813218 pf136837888418720" inlinks="pf13683817442900" path="/pages/home/home.xhtml"/>
-  <nodes xsi:type="pageflow:PFPage" name="pages/secure/secured.xhtml" id="pf136837834813219" referenceLink="//@navigationRule.3/@navigationCase.0/@toViewId|" outlinks="pf13683817442900" inlinks="pf136837834813218 pf13683817442901" path="/pages/secure/secured.xhtml"/>
+  <nodes xsi:type="pageflow:PFPage" name="pages/secure/secured.xhtml" id="pf136837834813219" referenceLink="//@navigationRule.3/@navigationCase.0/@toViewId|" outlinks="pf13683817442900" inlinks="pf136837834813218 pf13685012690913" path="/pages/secure/secured.xhtml"/>
   <nodes xsi:type="pageflow:PFPage" name="pages/unsecure/unsecured.xhtml" id="pf136837888418721" referenceLink="//@navigationRule.1/@navigationCase.0/@toViewId|" inlinks="pf136837888418720" path="/pages/unsecure/unsecured.xhtml"/>
-  <nodes xsi:type="pageflow:PFPage" name="pages/common/login.xhtml" id="pf13683817442902" referenceLink="//@navigationRule.3/@fromViewId|" outlinks="pf13683817442901" path="/pages/common/login.xhtml"/>
+  <nodes xsi:type="pageflow:PFPage" name="pages/common/login.xhtml" id="pf13685012690914" referenceLink="//@navigationRule.3/@fromViewId|" outlinks="pf13685012690913" path="/pages/common/login.xhtml"/>
   <links id="pf136837834813218" target="pf136837834813219" source="pf136837834813217" outcome="Secured" redirect="true" fromaction="#{navigator.navigateTo}"/>
   <links id="pf136837888418720" target="pf136837888418721" source="pf136837834813217" outcome="UnSecured" redirect="true" fromaction="#{navigator.navigateTo}"/>
   <links id="pf13683817442900" target="pf136837834813217" source="pf136837834813219" outcome="loggedout" fromaction="#{loginMgmtBean.logout}"/>
-  <links id="pf13683817442901" target="pf136837834813219" source="pf13683817442902" outcome="secured" fromaction="#{loginMgmtBean.login}"/>
+  <links id="pf13685012690913" target="pf136837834813219" source="pf13685012690914" outcome="secured" redirect="true" fromaction="#{loginMgmtBean.login}"/>
 </pageflow:Pageflow>
